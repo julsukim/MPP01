@@ -15,12 +15,17 @@ const DarkBackground = styled.div`
 `;
 
 const DialogBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   width: 320px;
   padding: 1.5rem;
   background: white;
   border-radius: 2px;
   h3 {
     margin: 0;
+    margin-bottom: 2rem;
     font-size: 1.5rem;
   }
   p {
@@ -31,7 +36,7 @@ const DialogBlock = styled.div`
 const ButtonGroup = styled.div`
   margin-top: 3rem;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 `;
 
 const ShortMarginButton = styled(Button)`
@@ -40,7 +45,7 @@ const ShortMarginButton = styled(Button)`
   }
 `;
 
-interface DialogProps {
+export interface DialogProps {
   title: string,
   children: ReactNode,
   confirmText: string,
@@ -64,10 +69,10 @@ const Dialog: React.FC<DialogProps> = ({
     <DarkBackground>
       <DialogBlock>
         <h3>{title}</h3>
-        <p>{children}</p>
+        {children}
         <ButtonGroup>
           <ShortMarginButton color="gray" onClick={onCancel}>{cancelText}</ShortMarginButton>
-          <ShortMarginButton color="pink" onClick={onConfirm}>{confirmText}</ShortMarginButton>
+          <ShortMarginButton color="blue" onClick={onConfirm}>{confirmText}</ShortMarginButton>
         </ButtonGroup>
       </DialogBlock>
     </DarkBackground>
