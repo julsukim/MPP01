@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import styled from "styled-components";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../AuthContext";
 
 const NavBarBlock = styled.div`
   display: flex;
@@ -11,9 +11,10 @@ const NavBarBlock = styled.div`
 
   a {
     text-decoration: none;
-    margin-right: 32px;
+    margin: 0 16px;
     color: #696767;
     transition: 0.3s;
+    cursor: pointer;
   }
 
   a:hover {
@@ -22,7 +23,7 @@ const NavBarBlock = styled.div`
 `;
 
 const NavBar = () => {
-  const { isLoggedIn, login, logout } = useAuth();
+  const { isLoggedIn, login, logout, username } = useAuth();
 
   return (
     <NavBarBlock>
@@ -32,7 +33,10 @@ const NavBar = () => {
         <Link to="/articles">Articles</Link>
       </div>
       {isLoggedIn ? (
-        <button onClick={logout}>logout</button>
+        <div>
+          <span>Hi, {username}</span>
+          <a onClick={logout}>Logout</a>
+        </div>
       ) : (
         <Link to='/login'>Login</Link>
       )}

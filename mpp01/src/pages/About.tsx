@@ -1,5 +1,4 @@
 import React from 'react';
-import NavBar from "../NavBar";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 
@@ -12,7 +11,6 @@ const About = () => {
 
   return (
     <div>
-      <NavBar />
       <h1>About</h1>
     </div>
   );

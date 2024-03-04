@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import { useAuth } from "../AuthContext";
 
 const LoginFormBlock = styled.div`
@@ -28,7 +28,7 @@ const Login = () => {
     password: ''
   });
 
-  const { isLoggedIn, login, logout } = useAuth();
+  const { isLoggedIn, login, logout, username } = useAuth();
 
   const { name, password } = inputs;
 
@@ -42,12 +42,16 @@ const Login = () => {
   const onSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (name === 'user' && password === '1234') {
-      login();
+      login(name);
       navigate('/');
     } else {
       alert('wrong!');
     }
   };
+
+  if (isLoggedIn) {
+    return <Navigate to="/" replace={true} />;
+  }
 
   return (
     <div>

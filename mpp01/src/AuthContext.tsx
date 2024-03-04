@@ -3,8 +3,9 @@ import React, { createContext, useContext, useState, FC, ReactNode } from 'react
 // 사용자 인증 정보의 타입을 정의합니다.
 interface AuthContextType {
   isLoggedIn: boolean;
-  login: () => void;
+  login: (name:string) => void;
   logout: () => void;
+  username: string|null;
 }
 
 // createContext를 사용하여 새로운 context를 생성합니다.
@@ -13,9 +14,11 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 // AuthProvider 컴포넌트를 생성하여 상태를 관리합니다.
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [username, setUsername] = useState<string|null>(null);
 
-  const login = () => {
+  const login = (name:string) => {
     setIsLoggedIn(true);
+    setUsername(name);
   };
 
   const logout = () => {
@@ -23,7 +26,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, username }}>
       {children}
     </AuthContext.Provider>
   );
