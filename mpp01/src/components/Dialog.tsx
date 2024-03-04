@@ -3,7 +3,7 @@ import styled, { css, keyframes } from 'styled-components';
 import Button from './Button';
 
 interface DialogStyleProps {
-  disappear: boolean;
+  $disappear: boolean;
 }
 
 const fadeIn = keyframes`
@@ -57,7 +57,7 @@ const DarkBackground = styled.div<DialogStyleProps>`
   animation-fill-mode: forwards;
   
   ${props =>
-    props.disappear &&
+    props.$disappear &&
     css`
       animation-name: ${fadeOut}
     `}
@@ -87,7 +87,7 @@ const DialogBlock = styled.div<DialogStyleProps>`
   animation-fill-mode: forwards;
 
   ${props =>
-      props.disappear &&
+      props.$disappear &&
       css`
       animation-name: ${slideDown}
     `}
@@ -137,8 +137,8 @@ const Dialog: React.FC<DialogProps> = ({
 
   if (!animate && !localVisible) return null;
   return (
-    <DarkBackground disappear={!visible}>
-      <DialogBlock disappear={!visible}>
+    <DarkBackground $disappear={!visible}>
+      <DialogBlock $disappear={!visible}>
         <h3>{title}</h3>
         {children}
         <ButtonGroup>
