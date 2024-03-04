@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, Outlet } from "react-router-dom";
+import React, { useState, useLayoutEffect } from 'react';
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
 import { useAuth } from "../AuthContext";
 import LoginDialog from "../components/LoginDialog";
@@ -36,6 +36,27 @@ const StyledInput = styled.input`
 `;
 
 const NavBar = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [nextLogin, setNextLogin] = useState('/');
+
+  useLayoutEffect(() => {
+    if (!isLoggedIn) {
+      switch (location.pathname) {
+        case '/about':
+          navigate('/');
+          setDialog(true);
+          setNextLogin('/about')
+          break;
+        case '/articles':
+          navigate('/');
+          setDialog(true);
+          setNextLogin('/articles')
+          break;
+      }
+    }
+  }, [location]);
+
   const { isLoggedIn, login, logout, username } = useAuth();
   const [dialog, setDialog] = useState(false);
   const [inputs, setInputs] = useState({
@@ -60,6 +81,7 @@ const NavBar = () => {
         name: '',
         password: ''
       })
+      navigate(nextLogin);
     } else {
       alert('wrong!');
     }
@@ -68,11 +90,14 @@ const NavBar = () => {
   const onClick = () => {
     setDialog(true);
   };
-  const onConfirm = () => {
-    setDialog(false);
-  };
+
   const onCancel = () => {
     setDialog(false);
+    setNextLogin('/');
+    setInputs({
+      name: '',
+      password: ''
+    })
   };
 
   return (

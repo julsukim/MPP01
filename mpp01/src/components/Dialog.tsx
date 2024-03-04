@@ -22,7 +22,7 @@ const DialogBlock = styled.div`
   width: 320px;
   padding: 1.5rem;
   background: white;
-  border-radius: 2px;
+  border-radius: 8px;
   h3 {
     margin: 0;
     margin-bottom: 2rem;

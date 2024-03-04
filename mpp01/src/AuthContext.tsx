@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, FC, ReactNode } from 'react';
+import { useNavigate } from "react-router-dom";
 
 // 사용자 인증 정보의 타입을 정의합니다.
 interface AuthContextType {
@@ -13,6 +14,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // AuthProvider 컴포넌트를 생성하여 상태를 관리합니다.
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  const navigate = useNavigate();
+
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [username, setUsername] = useState<string|null>(null);
 
@@ -23,6 +26,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   const logout = () => {
     setIsLoggedIn(false);
+    navigate('/');
   };
 
   return (

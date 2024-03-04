@@ -80,7 +80,6 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const Button: React.FC<ButtonProps> = ({ children, color="blue", size="medium", $outline=false, ...rest}) => {
-  console.log(children, color, size, $outline)
   return (
     <StyledButton color={color} size={size} $outline={$outline} {...rest}>
       {children}
