@@ -1,8 +1,46 @@
-import React, {ReactNode} from 'react';
-import styled from 'styled-components';
+import React, {useEffect, useState} from 'react';
+import styled, { css, keyframes } from 'styled-components';
 import Button from './Button';
 
-const DarkBackground = styled.div`
+interface DialogStyleProps {
+  disappear: boolean;
+}
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0
+  }
+  to {
+    opacity: 1
+  }
+`;
+
+const fadeOut = keyframes`
+  from {
+    opacity: 1
+  }
+  to {
+    opacity: 0
+  }
+`;
+
+const slideUp = keyframes`
+  from {
+    transform: translateY(200px);
+  } to {
+    transform: translateY(0px);
+  }
+`;
+
+const slideDown = keyframes`
+  from {
+    transform: translateY(0px);
+  } to {
+    transform: translateY(200px);
+  }
+`;
+
+const DarkBackground = styled.div<DialogStyleProps>`
   position: fixed;
   left: 0;
   top: 0;
@@ -12,9 +50,20 @@ const DarkBackground = styled.div`
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.8);
+  
+  animation-duration: 0.2s;
+  animation-timing-function: ease-out;
+  animation-name: ${fadeIn};
+  animation-fill-mode: forwards;
+  
+  ${props =>
+    props.disappear &&
+    css`
+      animation-name: ${fadeOut}
+    `}
 `;
 
-const DialogBlock = styled.div`
+const DialogBlock = styled.div<DialogStyleProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,6 +80,17 @@ const DialogBlock = styled.div`
   p {
     font-size: 1.125rem;
   }
+
+  animation-duration: 0.2s;
+  animation-timing-function: ease-out;
+  animation-name: ${slideUp};
+  animation-fill-mode: forwards;
+
+  ${props =>
+      props.disappear &&
+      css`
+      animation-name: ${slideDown}
+    `}
 `;
 
 const ButtonGroup = styled.div`
@@ -47,7 +107,7 @@ const ShortMarginButton = styled(Button)`
 
 export interface DialogProps {
   title: string,
-  children: ReactNode,
+  children: React.ReactNode,
   confirmText: string,
   cancelText: string,
   onConfirm: () => void,
@@ -64,10 +124,21 @@ const Dialog: React.FC<DialogProps> = ({
   onCancel,
   visible
 }) => {
-  if (!visible) return null;
+  const [animate, setAnimate] = useState(false);
+  const [localVisible, setLocalVisible] = useState(visible);
+
+  useEffect(() => {
+    if (localVisible && !visible) {
+      setAnimate(true);
+      setTimeout(() => setAnimate(false), 200);
+    }
+    setLocalVisible(visible);
+  }, [localVisible, visible]);
+
+  if (!animate && !localVisible) return null;
   return (
-    <DarkBackground>
-      <DialogBlock>
+    <DarkBackground disappear={!visible}>
+      <DialogBlock disappear={!visible}>
         <h3>{title}</h3>
         {children}
         <ButtonGroup>
