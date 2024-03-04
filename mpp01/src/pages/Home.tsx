@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from "../components/Button";
 import { ThemeProvider } from "styled-components";
+import Dialog from "../components/Dialog";
 
 const Home = () => {
+  const [dialog, setDialog] = useState(false);
+  const onClick = () => {
+    setDialog(true);
+  };
+  const onConfirm = () => {
+    setDialog(false);
+  };
+  const onCancel = () => {
+    setDialog(false);
+  };
   return (
     <div>
       <h1>Home</h1>
@@ -17,7 +28,15 @@ const Home = () => {
       >
         <Button>confirm</Button>
         <Button color="gray" size="small">confirm</Button>
-        <Button color="pink" size="large" $outline>confirm</Button>
+        <Button color="pink" size="large" $outline onClick={onClick}>confirm</Button>
+        <Dialog
+          title="Hello"
+          confirmText="confirm"
+          cancelText="cancel"
+          onConfirm={onConfirm}
+          onCancel={onCancel}
+          visible={dialog}
+        >Hi there ~</Dialog>
       </ThemeProvider>
     </div>
   );
